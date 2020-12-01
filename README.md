@@ -6,44 +6,44 @@ Finding exponential growth trends and exponential growth potential is key to suc
 
 
 # Files Description
-# Step0_data_processing
+## Step0_data_processing
 The scripts in this file are used to preprocess data.
 
-# step0_kaggle_dataset_download
+## step0_kaggle_dataset_download
 Downloads datasets from Kaggle datalake
 
-# step1_generate_header
+## step1_generate_header
 Generates headerfile.txt from the dataset folder which will be used by splitter.
 
-# step2_sampling_localmachine
+## step2_sampling_localmachine
 This code generates sample files in the local machine.
 
-# Step2_samling_map_reduce
+## Step2_samling_map_reduce
 Generates sample file from the map reduce.
 
-# satep3_splittling_partfiles_into_sample_files
+## satep3_splittling_partfiles_into_sample_files
 Generates sample files from the mapreduce part files
 
-# step3_potentialfinder
+## step3_potentialfinder
 Does preprocessing for the dataset and does exponential and logistic pattern fit
 
-# step5_potential_functions
+## step5_potential_functions
 It has support files for exponential and logistic fit and will be called by step3_potentialfinder
 
-# step6_consolidation_for_ml_sampled_data
+## step6_consolidation_for_ml_sampled_data
 preprocessing for ML for the sampled data
 
-# step6_consolidation_for_ml_whole_data
+## step6_consolidation_for_ml_whole_data
 preprocessing for ML for the whole data
 
 
-# step7_predicting_pattern_classes with ML
+## step7_predicting_pattern_classes with ML
 Has ML code for predicting classes
 
-# step8_plots_classification
+## step8_plots_classification
 Generates graphs and plot
 
-# Step9_creating_grphs
+## Step9_creating_grphs
 Generate graphs 
 
 
