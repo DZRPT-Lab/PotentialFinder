@@ -1,0 +1,35 @@
+### Data processing commands
+### These commands were used during downloading datasets from Kaggle and 
+### for preporcessing it on GCP
+
+### @authors: Abhijeet Amle, Roshan Bhandari, Abhimanyu Abhinav
+
+
+import os
+for i in range(100, 151):
+    cmd = "kaggle datasets list -p " + str(i) + " | sed 's/\|/ /'|awk '{print $1}' >> list.txt"
+    os.system(cmd)
+
+### to unzip all .zip files
+find . -name '*.zip' -exec sh -c 'unzip -d "${1%.*}" "$1"' _ {} \;
+
+
+### to delete all .zip files
+find . -name \*.zip -type f -exec rm -f {} \;
+
+
+### to find and move .csv files to destination directory
+find . -name *.csv -type f -print -exec mv {} /mnt/disks/localdisk/data/ \;
+
+
+### to find all of the distinct file extensions in a folder hierarchy
+find . -type f | perl -ne 'print $1 if m/\.([^.\/]+)$/' | sort -u
+
+
+### to randomly select and move file from a dir to another
+ls | shuf -n 100 | xargs -i mv {} /mnt/disks/localdisk/data/data_40G_1
+(moving from current dir to the destination)
+
+
+### generating line count
+wc -l * > linexount.txt
