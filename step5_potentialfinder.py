@@ -92,7 +92,7 @@ def update_analyzed_files(file_to_add,analyzed_files):
 
 n_rows=10000
 
-path="/mnt/disks/localdisk/new_sampled_data1/"
+path="F:/CPSC 8810 - Mining Massive Dataset/Sampled_data/used"
 debug=True
 analyzed_files="analyzed_files.txt"
 outputtablefile='outputtable_selected.csv'
@@ -105,7 +105,7 @@ if last_analyzed_file=="":
     firstrow=True
 else:
     firstrow=False
-    resulttable=pd.read_csv("/mnt/disks/localdisk/code/outputs_selected3/table/"+outputtablefile,sep=";")
+    resulttable=pd.read_csv("F:/CPSC 8810 - Mining Massive Dataset/outputs_selected3/table/"+outputtablefile,sep=";")
     
 print("TEST:: ", listdir(path))
 
@@ -219,9 +219,9 @@ for username in listdir(path):
                                         if not temptable is None:
                                             resulttable=resulttable.append(temptable,ignore_index=True)
                                             try:
-                                                resulttable.to_csv("/mnt/disks/localdisk/code/outputs_selected3/table/"+outputtablefile,sep=";")
+                                                resulttable.to_csv("F:/CPSC 8810 - Mining Massive Dataset/outputs_selected3/table/"+outputtablefile,sep=";")
                                             except:
                                                 print("Writing error. Resuming.")
 
-resulttable.to_csv("/mnt/disks/localdisk/code/outputs_selected3/table/outputtable.csv",sep=";")
+resulttable.to_csv("F:/CPSC 8810 - Mining Massive Dataset/outputs_selected3/table/outputtable.csv",sep=";")
 
