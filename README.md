@@ -33,7 +33,7 @@ It has support files for exponential and logistic fit and will be called by step
 ## step6_plots_classification
 Generates graphs and plot
 
-## Step7_creating_grphs
+## Step7_creating_graphs
 Generate graphs 
 
 
