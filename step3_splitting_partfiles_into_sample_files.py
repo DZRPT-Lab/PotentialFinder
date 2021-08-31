@@ -1,5 +1,5 @@
 #############
-# @authors: Roshan Bhandari, Abhijeet Aamle, Abhimanyu
+# @authors: Roshan Bhandari, Abhijeet Amle, Abhimanyu
 # This code is used to split the part files botained from the 
 # map reduce into multiple sample fi
 #############

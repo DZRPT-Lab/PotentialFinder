@@ -12,6 +12,8 @@ from scipy.optimize import curve_fit
 from sklearn.preprocessing import MinMaxScaler
 from dateutil.parser import parse
 
+type_1_count, type_2_count, type_3_count, type_4_count = 0, 0, 0, 0
+
 def find_exponents(df,
                    fractionToAnalyze=1,
                    outputPath='outputs',
@@ -43,6 +45,8 @@ def find_exponents(df,
     :return: A Pandas dataframe with a list of all date and metric column combinations with their exponential factor and R squared
     :rtype: dataframe
     '''
+	
+    global type_1_count, type_2_count, type_3_count, type_4_count
 
     def is_date(string, fuzzy=False):
         """
@@ -52,10 +56,16 @@ def find_exponents(df,
         :param fuzzy: bool, ignore unknown tokens in string if True
         """
         try:
+            float(string)
+            return False
+        except:
+            pass
+
+        try:
             parse(string, fuzzy=fuzzy)
             return True
 
-        except ValueError:
+        except:
             return False
 
     ######################## Functions: #########################
@@ -107,11 +117,11 @@ def find_exponents(df,
     def find_gap_in_data(ys):
         miny = min(ys)
         maxy = max (ys)
-        interval = (maxy - miny) / 50
+        interval = (maxy - miny) / (50 - 1)
         bucket_count = [0 for i in range(50)]
 
         for y in ys:
-            position = y // interval
+            position = int(y/interval)
             bucket_count[position] += 1
 
         o_count = 0
@@ -298,6 +308,9 @@ def find_exponents(df,
 
         ### filter columns where only 50% of the rows have values:
         df_temp= df_temp.loc[:, df_temp.isnull().mean() < columnFillThreshold]
+		
+        if 'date_days_since_first_date' not in df_temp.columns:
+            continue
 
         ### Only use the last fraction of the data, indexed / determined by the time column at hand:
         maxval=max(df_temp['date_days_since_first_date']) #use converted time columns to allow for easy multiplication
@@ -308,11 +321,13 @@ def find_exponents(df,
         ###loop through all numeric cols:
         for numericcol in data.select_dtypes(include=numerics).columns:
             if numericcol==datetimecol or numericcol not in df_temp.columns:
+                type_4_count += 1
                 continue ###skip this column if it is the date col
 
             # Remove Type 4 errors
             numerical_data = list(df_temp[numericcol])
             if numerical_data and is_date(str(numerical_data[0])):
+                type_4_count += 1
                 continue
 
             #### Start computing the values:
@@ -367,12 +382,19 @@ def find_exponents(df,
                 y_exp=exp_a*np.exp(exp_b*x)
 
                 n_gap_columns = find_gap_in_data(y)
+                if n_gap_columns > 0.4:
+                    type_1_count += 1
+                    continue
 
                 # fit a linear regression
                 y_lin = linear_fit(x, y)
 
                 # calculate the distance between linear model and exponential model
-                distance_exp_lin = sum_lin_minus_exp(x, y_lin, y_exp)
+                distance_exp_lin = None
+                # distance_exp_lin = sum_lin_minus_exp(x, y_lin, y_exp)
+                # if distance_exp_lin < 1:
+                #     type_3_count += 1
+                #     continue
 
                 #compute r²:
                 exp_residuals = y-y_exp
@@ -385,12 +407,14 @@ def find_exponents(df,
                     exp_r_s=np.nan
                     exp_b=np.nan
                     exp_a=np.nan
+                    continue
                 else:
                     fitted_exponential=True
 
                 # check the slope, if it is negative, we remove it because even
                 # if it is deemed exponential it is not of our interest
-                if exp_a < 0:
+                if exp_b < 0:
+                    type_2_count += 1
                     fitted_exponential = False
             except:
                 if debug:
@@ -426,6 +450,7 @@ def find_exponents(df,
                     logistic_r_s=np.nan
                     k=np.nan
                     x0=np.nan
+                    continue
                 else:
                     fitted_exponential=True
 
@@ -435,11 +460,12 @@ def find_exponents(df,
                 else:
                     print("Unexpected error exp fit:" + str(sys.exc_info()[0]))
             try:
-                #append to output table:
-                df_result=df_result.append(pd.Series([
-                    outputTablename,datetimecol,numericcol,fractionToAnalyze,
-                    delta_y,exp_b,exp_a,exp_r_s,k,logistic_r_s,
-                    distance_exp_lin, n_gap_columns],index=resulttablecols),ignore_index=True)
+                if exp_r_s > 0:
+                    #append to output table:
+                    df_result=df_result.append(pd.Series([
+                        outputTablename,datetimecol,numericcol,fractionToAnalyze,
+                        delta_y,exp_b,exp_a,exp_r_s,k,logistic_r_s,
+                        distance_exp_lin, n_gap_columns],index=resulttablecols),ignore_index=True)
 
             except Exception as e:
                 print(str(e))
@@ -453,7 +479,8 @@ def find_exponents(df,
 
             try: #plotting
 
-                if outputPlots and (fitted_exponential==True or fitted_logistic==True or fitted_powerlaw==True):
+                if outputPlots and (fitted_exponential==True or fitted_logistic==True or fitted_powerlaw==True) and exp_r_s > 0:
+
 
 
                     ########### Plotparameters:
@@ -542,5 +569,7 @@ def find_exponents(df,
                     raise
                 else:
                     print("Unexpected error:" + str(sys.exc_info()[0]))
+            #plt.close('all')
 
+#    print("Type-2 error count: {}, Type-4 error count: {} ".format(type_2_count, type_4_count))
     return(df_result)

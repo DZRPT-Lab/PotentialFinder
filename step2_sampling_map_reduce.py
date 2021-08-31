@@ -1,5 +1,5 @@
 #############
-# @authors: Roshan Bhandari, Abhijeet Aamle, Abhimanyu
+# @authors: Roshan Bhandari, Abhijeet Amle, Abhimanyu
 # This code is used to sample datasets. It uses  Map Reduce framework for sampling dataset and runs on cluster of 
 # machines including google dataproc.
 # To Run call: python3 step1.py gs://bucket_potentialfinder/1-jan-30-june-2013-calls-for-service.csv --master-instance-type e2-highmem-8 --instance-type e2-highmem-4 --num-core-instance 4 --files ../linecount.txt --output-dir=gs://output_potential/out101.txt --core-instance-config '{"disk_config": {"boot_disk_size_gb": 100}}' -r dataproc

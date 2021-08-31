@@ -2,13 +2,12 @@
 # coding: utf-8
 
 #############
-# @authors: Mathias Riechart, Roshan Bhandari, Abhijeet Aamle, Abhimanyu
+# @authors: Mathias Riechart, Roshan Bhandari, Abhijeet Amle, Abhimanyu
 # This code is used to pre process datasets and later feed into the functions.py that actually does the 
 # exponential and logistic fit.
 #############
 
-from function import *
-
+from step5_potentialfinder_functions import * 
 
 global_x=[]
 from os import listdir
@@ -91,8 +90,7 @@ def update_analyzed_files(file_to_add,analyzed_files):
     analyzed_files_obj.close()
 
 n_rows=10000
-
-path="F:/CPSC 8810 - Mining Massive Dataset/Sampled_data/used"
+path="D://Projects/Data_Mining/GCP_Bucket/sampled_data_01_25_2021"
 debug=True
 analyzed_files="analyzed_files.txt"
 outputtablefile='outputtable_selected.csv'
@@ -105,7 +103,7 @@ if last_analyzed_file=="":
     firstrow=True
 else:
     firstrow=False
-    resulttable=pd.read_csv("F:/CPSC 8810 - Mining Massive Dataset/outputs_selected3/table/"+outputtablefile,sep=";")
+    resulttable=pd.read_csv("D://Projects/Data_Mining/New_paper_work/Code/outputs_selected3/table/"+outputtablefile,sep=";")
     
 print("TEST:: ", listdir(path))
 
@@ -212,6 +210,8 @@ for username in listdir(path):
                                                             exp_r_s_threshold=0.7,
                                                             maxrows=n_rows,
                                                             debug=False)
+                                    #temptable["username"] = username
+                                    #temptable["datatablename"] = datatablename
                                     if firstrow:
                                         resulttable=temptable
                                         firstrow=False
@@ -219,9 +219,11 @@ for username in listdir(path):
                                         if not temptable is None:
                                             resulttable=resulttable.append(temptable,ignore_index=True)
                                             try:
-                                                resulttable.to_csv("F:/CPSC 8810 - Mining Massive Dataset/outputs_selected3/table/"+outputtablefile,sep=";")
+                                                resulttable.to_csv("D://Projects/Data_Mining/New_paper_work/Code/outputs_selected3/table/"+outputtablefile,sep=";")
                                             except:
                                                 print("Writing error. Resuming.")
 
-resulttable.to_csv("F:/CPSC 8810 - Mining Massive Dataset/outputs_selected3/table/outputtable.csv",sep=";")
+resulttable.to_csv("D://Projects/Data_Mining/New_paper_work/Code/outputs_selected3/table/outputtable.csv",sep=";")
+
+print("Type-1 error count: {}, Type-2 error count: {} Type-3 error count: {}, Type-4 error count: {} ".format(type_1_count, type_2_count, type_3_count, type_4_count))
 
