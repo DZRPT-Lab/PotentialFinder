@@ -30,20 +30,10 @@ Does preprocessing for the dataset and does exponential and logistic pattern fit
 ## step5_potential_functions
 It has support files for exponential and logistic fit and will be called by step3_potentialfinder
 
-## step6_consolidation_for_ml_sampled_data
-preprocessing for ML for the sampled data
-
-## step6_consolidation_for_ml_whole_data
-preprocessing for ML for the whole data
-
-
-## step7_predicting_pattern_classes with ML
-Has ML code for predicting classes
-
-## step8_plots_classification
+## step6_plots_classification
 Generates graphs and plot
 
-## Step9_creating_grphs
+## Step7_creating_grphs
 Generate graphs 
 
 
