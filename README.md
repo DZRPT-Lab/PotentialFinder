@@ -1,5 +1,5 @@
 # PotentialFinder - finding business potential in data lakes
-
+- this work was published in HICS 2021-
 
 # Abstract
 Finding exponential growth trends and exponential growth potential is key to success in businesses and startups. Building a product for a market that can grow exponentially would increase the likelihood of success. These growth potentials can be found in a variety of sectors. Different challenges lie ahead in terms of finding exponential patterns and trends. This paper deals with finding these exponential patterns in data lakes. It also proposes different algorithms that can scale up to petabytes of data which can come in different sizes and formats (tabular files). These algorithms can be key to pattern discovery in data lakes, ultimately empowering our search for growth opportunities.
